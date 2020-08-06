@@ -1,13 +1,13 @@
 <?php
     //最初の準備
-    //4-1DB接続設定//
+    //DB接続設定//
     $dsn = 'データベース名';
     $user = 'ユーザー名';
     $password = 'パスワード';
     $pdo = new PDO($dsn, $user, $password,
         array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
     
-    //4-2データベース内にテーブルを作成//
+    //データベース内にテーブルを作成//
     //IF～は「もしまだこのテーブルが存在しないなら」という意味を持つ
     //これがないと2回目以降エラーが発生する
     $sql = "CREATE TABLE IF NOT EXISTS tbtest"
@@ -22,7 +22,7 @@
 
 
     //通常の投稿フォーム
-	//4-5INSERT文：データを入力（データレコードの挿入）
+	//INSERT文：データを入力（データレコードの挿入）
 	if(strlen($_POST["name"])&&strlen($_POST["text"])&&empty($_POST["hiddeneditnum"])==1){
 	    $sql = $pdo -> prepare("INSERT INTO tbtest (name, comment, date, pass) VALUES (:name, :comment, :date, :pass)");
     	$sql -> bindParam(':name', $name, PDO::PARAM_STR);
@@ -37,7 +37,7 @@
 	    $sql -> execute();
     	//bindParamの引数名（:name など）はテーブルのカラム名に併せるとミスが少なくなります。最適なものを適宜決めよう。
 
-        //4-6SELECT文：入力したデータレコードを抽出し、表示する
+        //SELECT文：入力したデータレコードを抽出し、表示する
         //$rowの添字（[ ]内）は、4-2で作成したカラムの名称に併せる必要があります。
     	$sql = 'SELECT * FROM tbtest';
 	    $stmt = $pdo->query($sql);
@@ -55,7 +55,7 @@
 	}
 		
 	//削除フォーム
-	//4-8DELETE文：入力したデータレコードを削除
+	//DELETE文：入力したデータレコードを削除
 	elseif(empty($_POST["delnum"])==0&&$_POST["delpass"]!=NULL){
 	    $id = $_POST["delnum"];
 	    $pass = $_POST["delpass"];
@@ -99,7 +99,7 @@
 	
 
     //編集フォーム
-    //4-7UPDATE文：入力されているデータレコードの内容を編集
+    //UPDATE文：入力されているデータレコードの内容を編集
     //bindParamの引数（:nameなど）は4-2でどんな名前のカラムを設定したかで変える必要がある。
     elseif(empty($_POST["editnum"])==0&&$_POST["editpass"]!=NULL){
         //指定されたidの投稿を抽出
